@@ -1,0 +1,135 @@
+﻿
+
+
+// >acorda na cela no começo do dia de trabalho
+// -(npc cela amigo, "bruno")wake up already, we got to go
+// >portas se abrem e caminhamos em direçao as mesas
+// -(voz externa)you have 30 seconds to eat all you can
+// >porta para o trabalho abre
+// -(mc)same thing again, i can't take it anymore, i wanna go outside, i wanna see the sky and be free from this
+// >chega ate a fornalha que trabalha (guardas ao redor)
+// (npc)fast, you must produce more, if you work well, one day you may rise in life
+// (mc thinking) i dont believe this anymore, i cant believe i fell for it once... I wish something would happen
+// >guard has a heart attack and dies
+// -(npc friend) oh my god, he is dead, what do we do, should we call someone?
+// -(mc thinking) there is a key in his belt, should i pick it up?
+// >pick up key
+// -(mc thinking) i wonder what door can be opened with this, maybe the door that leads to the stairs?
+// >work day ends and you try to open the door
+// -(mc thinking) i cant believe im doing it, i dont even know what is out there, what if they catch me?? im dead for sure. well... now there is no way back
+// >goes close to the vents
+// >notices furnaces are still smelting at night
+// -(mc thinking) maybe i can go out through the ducts, but there is a lot of smoke, i would need to turn off the factory, it is too risky
+// >turns off factory
+// i should probably run now
+// >goes outside and sees the sky for the first time
+// (mc) im not going any more down, i must see what is up there, ive heard rumors that it is a paradise
+// >wind noise
+// >parkour up
+
+title: Start
+---
+<<declare $hasKey = false>>
+<<declare $factoryOff = false>>
+<<declare $cellDoorOpen = false>>
+<<declare $stairDoorOpen = false>>
+<<declare $guardDead = false>>
+<<declare $introDone = false>>
+<<declare $sawSky = false>>
+
+<<jump BrunoStart>>
+===
+
+title: BrunoStart
+---
+<<set_enabled "DoorBarsTrigger" false>>
+
+Bruno: Wake up, we got to work.
+
+<<set $introDone = true>>
+<<wait 5>>
+
+Announcer: Cell doors will open in 3 seconds.
+<<wait 1>>
+
+Announcer: 3
+
+Announcer: 2
+
+Announcer: 1
+
+
+<<set $cellDoorOpen = true>>
+<<set_enabled "DoorBarsTrigger" true>>
+<<activate "DoorBarsTrigger">>
+===
+
+title: CellWalk
+---
+External Voice: You have 30 seconds to eat all you can.
+===
+
+title: ThoughtsStart
+---
+Here we go again, another day of the same, when will this be over? Well... I better eat.
+===
+
+title: FurnaceArrival
+---
+Guard: Faster. You must produce more. If you work well, one day you may rise in life.
+
+You: I don't believe that anymore. I can't believe I fell for it once. I wish something would happen.
+===
+
+title: GuardDies
+---
+<<set $guardDead = true>>
+Bruno: Oh my God. He is dead. What do we do? Should we call someone?
+
+You: There is a key on his belt. Should I take it?
+-> Take the key
+    <<jump KeyPickup>>
+-> Leave it
+    Bruno: Then let's get away from here.
+===
+
+title: KeyPickup
+---
+<<set $hasKey = true>>
+You: I wonder what door this opens. Maybe the one leading to the stairs.
+===
+
+title: StairDoorTry
+---
+<<if $hasKey == true>>
+    <<set $stairDoorOpen = true>>
+    You: I can't believe I'm doing this. I don't even know what is out there. If they catch me, I'm dead for sure. Well... now there is no way back.
+<<else>>
+    You: It's locked.
+<<endif>>
+===
+
+title: VentThought
+---
+You: The furnaces are still running at night. Maybe I could go through the ducts, but there is too much smoke. I would need to shut the factory down. That is too risky.
+===
+
+title: FactoryOff
+---
+<<set $factoryOff = true>>
+You: I should probably run now.
+===
+
+title: FirstSky
+---
+<<set $sawSky = true>>
+You: I'm not going down anymore. I have to see what is up there. I've heard rumors that it is paradise.
+===
+
+//Items
+
+title: KeyTrue
+---
+<<set $hasKey = true>>
+Key added to inventory
+===
