@@ -1,135 +1,348 @@
-﻿
-
-
-// >acorda na cela no começo do dia de trabalho
-// -(npc cela amigo, "bruno")wake up already, we got to go
-// >portas se abrem e caminhamos em direçao as mesas
-// -(voz externa)you have 30 seconds to eat all you can
-// >porta para o trabalho abre
-// -(mc)same thing again, i can't take it anymore, i wanna go outside, i wanna see the sky and be free from this
-// >chega ate a fornalha que trabalha (guardas ao redor)
-// (npc)fast, you must produce more, if you work well, one day you may rise in life
-// (mc thinking) i dont believe this anymore, i cant believe i fell for it once... I wish something would happen
-// >guard has a heart attack and dies
-// -(npc friend) oh my god, he is dead, what do we do, should we call someone?
-// -(mc thinking) there is a key in his belt, should i pick it up?
-// >pick up key
-// -(mc thinking) i wonder what door can be opened with this, maybe the door that leads to the stairs?
-// >work day ends and you try to open the door
-// -(mc thinking) i cant believe im doing it, i dont even know what is out there, what if they catch me?? im dead for sure. well... now there is no way back
-// >goes close to the vents
-// >notices furnaces are still smelting at night
-// -(mc thinking) maybe i can go out through the ducts, but there is a lot of smoke, i would need to turn off the factory, it is too risky
-// >turns off factory
-// i should probably run now
-// >goes outside and sees the sky for the first time
-// (mc) im not going any more down, i must see what is up there, ive heard rumors that it is a paradise
-// >wind noise
-// >parkour up
-
 title: Start
 ---
+<<declare $workCount = 0>>
 <<declare $hasKey = false>>
+<<declare $hasEaten = false>>
 <<declare $factoryOff = false>>
 <<declare $cellDoorOpen = false>>
+<<declare $DoorRoomTrigger = false>>
+<<declare $factoryDoorTrigger = false>>
 <<declare $stairDoorOpen = false>>
-<<declare $guardDead = false>>
+<<declare $guardDeadTrigger = false>>
 <<declare $introDone = false>>
+<<declare $sawOutside = false>>
 <<declare $sawSky = false>>
+<<declare $hasProof = false>>
 
-<<jump BrunoStart>>
-===
 
-title: BrunoStart
----
+// 1. Wake-up / Dormitory
+
 <<set_enabled "DoorBarsTrigger" false>>
 
-Bruno: Wake up, we got to work.
+Bruno: Oh, you're awake.
+<<wait 1>>
+Bruno: It is our turn now, if we're late again they'll cut rations.
+<<wait 2>>
+Announcer: Workers of Sector 14. Meal period begins now.
+Announcer: Proceed in an orderly fashion.
+You: Here we go one more time.
+You: I wonder if the sky is out there today.
+Bruno: Still thinking those things?
+You: One day I'll see it.
+Bruno: Remember the guy that tried to escape? Don't end up like him.
+
+<<wait 1>>
+Announcer: Cell doors opening.
 
 <<set $introDone = true>>
-<<wait 5>>
-
-Announcer: Cell doors will open in 3 seconds.
 <<wait 1>>
-
-Announcer: 3
-
-Announcer: 2
-
-Announcer: 1
-
 
 <<set $cellDoorOpen = true>>
 <<set_enabled "DoorBarsTrigger" true>>
 <<activate "DoorBarsTrigger">>
 ===
 
-title: CellWalk
+//Work
+title: Work
 ---
-External Voice: You have 30 seconds to eat all you can.
+<<set $workCount = $workCount + 1>>
+
+<<if $workCount == 1>>
+You: First one done.
+Announcer: Output below target.
+Announcer: Continue work cycle.
+<<elseif $workCount == 2>>
+Done, just need one more
+Announcer: Productivity sustains prosperity.
+<<elseif $workCount == 3>>
+<<jump GuardDies>>
+<<endif>>
 ===
 
-title: ThoughtsStart
+// 2. Cafeteria
+title: Cafeteria
 ---
-Here we go again, another day of the same, when will this be over? Well... I better eat.
+Announcer: Meal period has begun. Proceed to your designated spot.
+
+You: This food is the only thing keeping me sane.
+You: But it is not enough.
 ===
 
+//CellRoomExit
+title: CellRoomDoorExit
+---
+<<wait 3>>
+<<set_enabled "DoorRoomTrigger" true>>
+<<activate "DoorRoomTrigger">>
+
+Proceed and wait until you are called.
+===
+
+// 2. Locked Door / Upper Access
+title: LockedDoor
+---
+<<if $hasKey == true>>
+    <<jump StairDoorTry>>
+<<else>>
+    Door: ACCESS DENIED - AUTHORIZED PERSONNEL ONLY
+    You: This must be where they come from.
+    You: Supervisors. Guards. The people above.
+    You: It looks better on the other side.
+    Guard: Get away from the door immediately!
+    <<wait 3>>
+    Announcer: You may now proceed to your designated working position.
+    <<set_enabled "factoryDoorTrigger" true>>
+    <<activate "factoryDoorTrigger">>
+<<endif>>
+===
+
+// 3. Factory Work
 title: FurnaceArrival
 ---
-Guard: Faster. You must produce more. If you work well, one day you may rise in life.
+Guard: Start working immediately.
+Guard: Productivity sustains prosperity.
+Guard: If you work well, one day you will be out of here.
 
-You: I don't believe that anymore. I can't believe I fell for it once. I wish something would happen.
+You: I used to believe them.
+You: I wish something would happen.
 ===
 
+title: FactoryWork1
+---
+Announcer: Output below target.
+Announcer: Continue work cycle.
+
+You: Heat.
+You: Smoke.
+You: Again.
+===
+
+title: FactoryWork2
+---
+Worker: Keep your head down.
+Worker: The guards are watching.
+===
+
+title: FactoryWork3
+---
+Announcer: Productivity sustains prosperity.
+
+You: My hands know the work better than I do.
+===
+
+// 3. Inciting Incident
 title: GuardDies
 ---
-<<set $guardDead = true>>
-Bruno: Oh my God. He is dead. What do we do? Should we call someone?
 
-You: There is a key on his belt. Should I take it?
--> Take the key
+
+Guard: Back to work.
+Guard: I said-
+Guard: AAAAAAAAAAAAAAAA
+
+<<set_enabled "guardDeadTrigger" true>>
+<<activate "guardDeadTrigger">>
+
+Bruno: What happened?
+Worker: Don't touch him.
+Bruno: He isn't moving.
+
+Supervisor: BACK TO WORK.
+
+You: His keycard.
+You: Nobody is moving.
+You: The door.
+You: If I ever wanted to leave... this is it.
+
+-> Take the keycard
     <<jump KeyPickup>>
 -> Leave it
-    Bruno: Then let's get away from here.
+    Bruno: Then move. Before someone blames us.
 ===
 
 title: KeyPickup
 ---
 <<set $hasKey = true>>
-You: I wonder what door this opens. Maybe the one leading to the stairs.
+
+You: It is heavier than I thought.
+You: Maybe this opens the upper door.
+You: Maybe this is the only chance I will ever get.
 ===
 
+// 4. The Decision
 title: StairDoorTry
 ---
 <<if $hasKey == true>>
     <<set $stairDoorOpen = true>>
-    You: I can't believe I'm doing this. I don't even know what is out there. If they catch me, I'm dead for sure. Well... now there is no way back.
+    Door: ACCESS GRANTED
+
+    You: If they catch me...
+    You: I'm dead.
+    You: But if I stay here... was I ever alive?
 <<else>>
+    Door: ACCESS DENIED - AUTHORIZED PERSONNEL ONLY
     You: It's locked.
 <<endif>>
 ===
 
+// 5. Upper Maintenance Area / Vent
 title: VentThought
 ---
-You: The furnaces are still running at night. Maybe I could go through the ducts, but there is too much smoke. I would need to shut the factory down. That is too risky.
+You: A vent.
+You: Maybe it leads outside.
+
+You: I can't breathe in there.
+You: The smoke is too thick.
+
+Announcer: Unauthorized presence detected.
+Announcer: Security response in progress.
+
+You: Emergency stop.
+You: If I shut the machines down, the smoke might clear.
+===
+
+title: EmergencyStopLocked
+---
+You: The handle is stuck.
+You: I need something heavy to force it down.
+===
+
+title: EmergencyStopReady
+---
+You: This should be enough.
+You: Pull.
 ===
 
 title: FactoryOff
 ---
 <<set $factoryOff = true>>
-You: I should probably run now.
+
+Announcer: Production failure detected.
+Announcer: Restore output immediately.
+
+You: Silence.
+You: For the first time in my life...
+You: silence.
 ===
 
+title: VentEscape
+---
+<<if $factoryOff == true>>
+    You: The smoke is clearing.
+    You: Go. Now.
+<<else>>
+    You: I still can't breathe in there.
+<<endif>>
+===
+
+// 6. First View Outside
 title: FirstSky
 ---
-<<set $sawSky = true>>
-You: I'm not going down anymore. I have to see what is up there. I've heard rumors that it is paradise.
+<<set $sawOutside = true>>
+
+You: So this is... outside?
+
+<<wait 1>>
+
+You: It's uglier than I imagined.
+
+<<wait 1>>
+
+You: But it's real.
+You: If this isn't the sky... I just need to go higher.
 ===
 
-//Items
+// 7. Parkour Climb
+title: ParkourEarly
+---
+You: I never knew buildings were this tall.
+===
 
+title: ParkourMiddle
+---
+You: How many people live above us?
+===
+
+title: ParkourLate
+---
+You: Maybe freedom is only for the people at the top.
+===
+
+// 8. Spiral Tower / Final Ascent
+title: PropagandaPoster1
+---
+Poster: ASCENSION IS PRIVILEGE
+===
+
+title: PropagandaPoster2
+---
+Poster: THE HIGHER LEVELS SUSTAIN HUMANITY
+===
+
+title: SpiralTower
+---
+You: So this is where they go.
+You: Up.
+You: Always up.
+===
+
+title: FinalAscent
+---
+You: My legs are shaking.
+You: I am not turning back.
+===
+
+// 9. Utopia Above the Clouds
+title: AboveClouds
+---
+<<set $sawSky = true>>
+<<set $hasProof = true>>
+
+You: Warmth...
+You: Color...
+You: Air.
+
+<<wait 1>>
+
+You: This is what they kept from us.
+
+<<wait 1>>
+
+You: The sky...
+===
+
+title: AboveCloudsWalk
+---
+You: People live here.
+You: Plants live here.
+You: They told us nothing could survive outside.
+===
+
+// 10. Ending - Ambiguous Dream
+title: EndingWake
+---
+Bruno: Wake up already.
+Bruno: If we're late again, they'll cut rations.
+
+Announcer: Workers of Sector 14. Meal period begins now.
+Announcer: Proceed in an orderly fashion.
+
+You: Same walls.
+You: Same smoke.
+You: Same day.
+
+<<if $hasProof == true>>
+    You: Wait.
+    You: A leaf.
+    You: ...No.
+    You: It was real.
+<<else>>
+    You: I know what is up there.
+<<endif>>
+===
+
+// Inventory / utility trigger
 title: KeyTrue
 ---
 <<set $hasKey = true>>
-Key added to inventory
+Keycard added to inventory.
 ===
