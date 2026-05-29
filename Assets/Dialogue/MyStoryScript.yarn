@@ -281,13 +281,13 @@ Poster: THE HIGHER LEVELS SUSTAIN HUMANITY
 title: Tower
 ---
 You: Where is this place?
-You: Where does it lead... above the clouds?
 You: Are those beams sustaining something above?
+You: Where does it lead... above the clouds?
 ===
 
 
 // 9. Utopia Above the Clouds
-title: AboveClouds
+title: SeeSky
 ---
 <<set $sawSky = true>>
 <<set $hasProof = true>>
