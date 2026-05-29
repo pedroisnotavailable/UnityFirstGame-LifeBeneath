@@ -6,7 +6,15 @@ title: Start
 <<declare $factoryOff = false>>
 <<declare $cellDoorOpen = false>>
 <<declare $DoorRoomTrigger = false>>
-<<declare $factoryDoorTrigger = false>>
+
+<<declare $factoryDoorTriggerOpen = false>>
+<<declare $factoryDoorTriggerClose = false>>
+
+<<declare $ChilliBeansShowTrigger = false>>
+
+<<declare $MusicBackTrigger = false>>
+
+<<declare $workDoneTrigger = false>>
 <<declare $stairDoorOpen = false>>
 <<declare $guardDeadTrigger = false>>
 <<declare $introDone = false>>
@@ -21,9 +29,9 @@ title: Start
 
 Bruno: Oh, you're awake.
 <<wait 1>>
-Bruno: It is our turn now, if we're late again they'll cut rations.
+Bruno: It is your turn now, if we're late again they wont allow food choice anymore.
 <<wait 2>>
-Announcer: Workers of Sector 14. Meal period begins now.
+Announcer: Worker 14 . Meal period begins now.
 Announcer: Proceed in an orderly fashion.
 You: Here we go one more time.
 You: I wonder if the sky is out there today.
@@ -52,10 +60,13 @@ You: First one done.
 Announcer: Output below target.
 Announcer: Continue work cycle.
 <<elseif $workCount == 2>>
-Done, just need one more
-Announcer: Productivity sustains prosperity.
+You: Another one.
+Announcer: Proceed to next.
 <<elseif $workCount == 3>>
 <<jump GuardDies>>
+Almost there, just one more.
+<<else>>
+<<jump WorkDone>>
 <<endif>>
 ===
 
@@ -71,11 +82,17 @@ You: But it is not enough.
 //CellRoomExit
 title: CellRoomDoorExit
 ---
-<<wait 3>>
+You: I love those beans. They make me think of the sky.
+You: And make me want to jump so high.
+<<wait 7>>
 <<set_enabled "DoorRoomTrigger" true>>
 <<activate "DoorRoomTrigger">>
 
 Proceed and wait until you are called.
+
+<<set_enabled "MusicBackTrigger" true>>
+<<activate "MusicBackTrigger">>
+
 ===
 
 // 2. Locked Door / Upper Access
@@ -91,8 +108,10 @@ title: LockedDoor
     Guard: Get away from the door immediately!
     <<wait 3>>
     Announcer: You may now proceed to your designated working position.
-    <<set_enabled "factoryDoorTrigger" true>>
-    <<activate "factoryDoorTrigger">>
+
+    <<set_enabled "factoryDoorTriggerOpen" true>>
+    <<activate "factoryDoorTriggerOpen">>
+
 <<endif>>
 ===
 
@@ -100,72 +119,39 @@ title: LockedDoor
 title: FurnaceArrival
 ---
 Guard: Start working immediately.
-Guard: Productivity sustains prosperity.
 Guard: If you work well, one day you will be out of here.
 
 You: I used to believe them.
 You: I wish something would happen.
 ===
 
-title: FactoryWork1
----
-Announcer: Output below target.
-Announcer: Continue work cycle.
-
-You: Heat.
-You: Smoke.
-You: Again.
-===
-
-title: FactoryWork2
----
-Worker: Keep your head down.
-Worker: The guards are watching.
-===
-
-title: FactoryWork3
----
-Announcer: Productivity sustains prosperity.
-
-You: My hands know the work better than I do.
-===
 
 // 3. Inciting Incident
 title: GuardDies
 ---
 
-
-Guard: Back to work.
-Guard: I said-
-Guard: AAAAAAAAAAAAAAAA
+Guard: Good job, keep it u-.
+Guard: (coughs) My chest...
+Guard: AAAAAAAAAAAAA
 
 <<set_enabled "guardDeadTrigger" true>>
 <<activate "guardDeadTrigger">>
 
-Bruno: What happened?
-Worker: Don't touch him.
-Bruno: He isn't moving.
+You: What is happeinng?
+You: Is he alive?
 
-Supervisor: BACK TO WORK.
+Announcer: Do not stop production.
 
-You: His keycard.
-You: Nobody is moving.
-You: The door.
-You: If I ever wanted to leave... this is it.
-
--> Take the keycard
-    <<jump KeyPickup>>
--> Leave it
-    Bruno: Then move. Before someone blames us.
+You: What is that on his body?
 ===
 
 title: KeyPickup
 ---
+You: His key.
+You: If I ever wanted to leave... this is it.
+You: He is the only person taking care of this place. I gotta finish work so the door opens and I can leave!
 <<set $hasKey = true>>
-
-You: It is heavier than I thought.
-You: Maybe this opens the upper door.
-You: Maybe this is the only chance I will ever get.
+You: Move back to the regular working position until told otherwise.
 ===
 
 // 4. The Decision
@@ -184,87 +170,101 @@ title: StairDoorTry
 <<endif>>
 ===
 
+title: WorkDone
+---
+Announcer: You may now return to your cells
+Announcer: You have failed to meet the quota, your food will be cut.
+
+You: This must be a sign, I am leaving this place. 
+
+<<set_enabled "factoryDoorTriggerOpen" true>>
+<<activate "factoryDoorTriggerOpen">>
+===
+
+title: TopArrival
+---
+You: So this is the view from up here?
+You: I have never seen it through this perspective.
+You: I better keep going.
+===
+
 // 5. Upper Maintenance Area / Vent
-title: VentThought
+title: VentsArrival
 ---
-You: A vent.
-You: Maybe it leads outside.
-
-You: I can't breathe in there.
-You: The smoke is too thick.
-
-Announcer: Unauthorized presence detected.
-Announcer: Security response in progress.
-
-You: Emergency stop.
-You: If I shut the machines down, the smoke might clear.
+You: The ventilation system... Maybe I can escape through it if I find a way to climb.
 ===
 
-title: EmergencyStopLocked
+title: VentFail
 ---
-You: The handle is stuck.
-You: I need something heavy to force it down.
+You: There is so much smoke... I can't go in.
+You: I think there is an emergency stop button around... I will try that.
 ===
 
-title: EmergencyStopReady
+
+title: ButtonPressed
 ---
-You: This should be enough.
-You: Pull.
+You: Here goes nothing!
+You: I've never felt so good.
+<<wait 1>>
+You: Better run now.
+
+Announcer: WHO DARES STOP PRODUCTION.
 ===
 
-title: FactoryOff
+title: OutsideFirstTime
 ---
-<<set $factoryOff = true>>
-
-Announcer: Production failure detected.
-Announcer: Restore output immediately.
 
 You: Silence.
 You: For the first time in my life...
 You: silence.
-===
-
-title: VentEscape
----
-<<if $factoryOff == true>>
-    You: The smoke is clearing.
-    You: Go. Now.
-<<else>>
-    You: I still can't breathe in there.
-<<endif>>
-===
-
-// 6. First View Outside
-title: FirstSky
----
-<<set $sawOutside = true>>
-
-You: So this is... outside?
-
-<<wait 1>>
-
-You: It's uglier than I imagined.
-
-<<wait 1>>
-
-You: But it's real.
-You: If this isn't the sky... I just need to go higher.
+<<wait 2>>
+You: Is this... the outside?
+You: It is not how I read in the books.
+You: I know this can't be all. I will keep going up!
+You: I gotta find a way.
 ===
 
 // 7. Parkour Climb
-title: ParkourEarly
+title: SeesBuildings
 ---
+<<wait 2>>
 You: I never knew buildings were this tall.
 ===
 
-title: ParkourMiddle
+title:ParkourStarts
+---
+<<wait 3>>
+I can do it!
+===
+
+title: Reflection1
 ---
 You: How many people live above us?
 ===
 
-title: ParkourLate
+title: Reflection2
 ---
 You: Maybe freedom is only for the people at the top.
+===
+
+title: LeapOfFaithBeans
+---
+You: How can I possibly make this jump? It is too far...
+You: I knew it wouldn't work, what was I thinking?
+<<wait 2>>
+
+<<set_enabled "ChilliBeansShowTrigger" true>>
+<<activate "ChilliBeansShowTrigger">>
+
+You: Wait what is this?
+
+You: Are these my favorite chilli beans? I can't believe it!!!
+===
+
+title: LeapOfFaithBeansAte
+---
+You: It never fails... Those beans fill me with hope!
+You: I feel like I can do this jump!
 ===
 
 // 8. Spiral Tower / Final Ascent
@@ -278,18 +278,13 @@ title: PropagandaPoster2
 Poster: THE HIGHER LEVELS SUSTAIN HUMANITY
 ===
 
-title: SpiralTower
+title: Tower
 ---
-You: So this is where they go.
-You: Up.
-You: Always up.
+You: Where is this place?
+You: Where does it lead... above the clouds?
+You: Are those beams sustaining something above?
 ===
 
-title: FinalAscent
----
-You: My legs are shaking.
-You: I am not turning back.
-===
 
 // 9. Utopia Above the Clouds
 title: AboveClouds
