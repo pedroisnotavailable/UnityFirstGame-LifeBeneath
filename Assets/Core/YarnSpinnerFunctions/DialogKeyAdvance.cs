@@ -7,6 +7,11 @@ public class DialogKeyAdvance : MonoBehaviour
 {
     // Drag and drop the DialogueRunner component here in the Inspector
     private DialogueRunner dialogueRunner;
+    private bool wasDialogueRunning;
+    private float ignoreAdvanceUntil;
+
+    [SerializeField]
+    private float advanceDelayAfterStart = 0.15f;
 
     void Start()
     {
@@ -15,15 +20,28 @@ public class DialogKeyAdvance : MonoBehaviour
 
     void Update()
     {
-        // Check if a dialogue is currently running
-        if (dialogueRunner.IsDialogueRunning)
+        if (dialogueRunner == null)
         {
-            // Use the Keyboard class to check for the 'E' key being pressed down
-            if (Input.GetKeyDown(KeyCode.E) || Keyboard.current[Key.E].wasPressedThisFrame)
-            {
-                // Request the next line from the DialogueRunner
-                dialogueRunner.RequestNextLine();
-            }
+            return;
+        }
+
+        bool isDialogueRunning = dialogueRunner.IsDialogueRunning;
+
+        if (isDialogueRunning && !wasDialogueRunning)
+        {
+            ignoreAdvanceUntil = Time.unscaledTime + advanceDelayAfterStart;
+        }
+
+        wasDialogueRunning = isDialogueRunning;
+
+        if (!isDialogueRunning || Time.unscaledTime < ignoreAdvanceUntil)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E) || Keyboard.current != null && Keyboard.current[Key.E].wasPressedThisFrame)
+        {
+            dialogueRunner.RequestNextLine();
         }
     }
 }

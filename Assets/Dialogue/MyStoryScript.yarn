@@ -14,6 +14,8 @@ title: Start
 
 <<declare $MusicBackTrigger = false>>
 
+<<declare $StairsTrigger = false>>
+
 <<declare $workDoneTrigger = false>>
 <<declare $stairDoorOpen = false>>
 <<declare $guardDeadTrigger = false>>
@@ -29,7 +31,7 @@ title: Start
 
 Bruno: Oh, you're awake.
 <<wait 1>>
-Bruno: It is your turn now, if we're late again they wont allow food choice anymore.
+Bruno: It is your turn now, if you're late they might stop food choice.
 <<wait 2>>
 Announcer: Worker 14 . Meal period begins now.
 Announcer: Proceed in an orderly fashion.
@@ -82,8 +84,8 @@ You: But it is not enough.
 //CellRoomExit
 title: CellRoomDoorExit
 ---
-You: I love those beans. They make me think of the sky.
-You: And make me want to jump so high.
+You: I love those beans. They make me imagine the outside.
+You: They make me believe I can do anything.
 <<wait 7>>
 <<set_enabled "DoorRoomTrigger" true>>
 <<activate "DoorRoomTrigger">>
@@ -102,9 +104,9 @@ title: LockedDoor
     <<jump StairDoorTry>>
 <<else>>
     Door: ACCESS DENIED - AUTHORIZED PERSONNEL ONLY
-    You: This must be where they come from.
+    You: This is where.
     You: Supervisors. Guards. The people above.
-    You: It looks better on the other side.
+    You: If only...
     Guard: Get away from the door immediately!
     <<wait 3>>
     Announcer: You may now proceed to your designated working position.
@@ -290,11 +292,11 @@ You: Where does it lead... above the clouds?
 title: SeeSky
 ---
 <<set $sawSky = true>>
-<<set $hasProof = true>>
-
-You: Warmth...
-You: Color...
-You: Air.
+<<wait 2>>
+...
+You: It is more beautiful than I could ever imagine.
+You: The color...
+You: The fresh air.
 
 <<wait 1>>
 
@@ -303,6 +305,8 @@ You: This is what they kept from us.
 <<wait 1>>
 
 You: The sky...
+<<set_enabled "StairsTrigger" true>>
+<<activate "StairsTrigger">>
 ===
 
 title: AboveCloudsWalk
