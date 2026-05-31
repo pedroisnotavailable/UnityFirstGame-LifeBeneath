@@ -148,7 +148,7 @@ Guard: AAAAAAAAAAAAA
 <<set_enabled "guardDeadTrigger" true>>
 <<activate "guardDeadTrigger">>
 
-You: What is happennig?
+You: What is happenning?
 You: Is he alive?
 
 Announcer: Do not stop production.
