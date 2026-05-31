@@ -23,11 +23,13 @@ title: Start
 <<declare $sawOutside = false>>
 <<declare $sawSky = false>>
 <<declare $hasProof = false>>
+<<declare $objective = "">>
 
 
 // 1. Wake-up / Dormitory
 
 <<set_enabled "DoorBarsTrigger" false>>
+<<set $objective = "">>
 
 Bruno: Oh, you're awake.
 <<wait 1>>
@@ -48,6 +50,7 @@ Announcer: Cell doors opening.
 <<wait 1>>
 
 <<set $cellDoorOpen = true>>
+<<set $objective = "Proceed to eating area.">>
 <<set_enabled "DoorBarsTrigger" true>>
 <<activate "DoorBarsTrigger">>
 ===
@@ -77,6 +80,8 @@ title: Cafeteria
 ---
 Announcer: Meal period has begun. Proceed to your designated spot.
 
+<<set $objective = "Eat the chilli beans.">>
+
 You: This food is the only thing keeping me sane.
 You: But it is not enough.
 ===
@@ -84,6 +89,7 @@ You: But it is not enough.
 //CellRoomExit
 title: CellRoomDoorExit
 ---
+<<set $objective = "Wait until you are called to work.">>
 You: I love those beans. They make me imagine the outside.
 You: They make me believe I can do anything.
 <<wait 7>>
@@ -104,11 +110,11 @@ title: LockedDoor
     <<jump StairDoorTry>>
 <<else>>
     Door: ACCESS DENIED - AUTHORIZED PERSONNEL ONLY
-    You: This is where.
-    You: Supervisors. Guards. The people above.
+    You: This is where they come from.
+    You: Guards, supervisors, The people above us.
     You: If only...
-    Guard: Get away from the door immediately!
     <<wait 3>>
+    <<set $objective = "Go into the factory.">>
     Announcer: You may now proceed to your designated working position.
 
     <<set_enabled "factoryDoorTriggerOpen" true>>
@@ -120,6 +126,7 @@ title: LockedDoor
 // 3. Factory Work
 title: FurnaceArrival
 ---
+<<set $objective = "Complete the work cycle by interacting with each furnace.">>
 Guard: Start working immediately.
 Guard: If you work well, one day you will be out of here.
 
@@ -131,6 +138,7 @@ You: I wish something would happen.
 // 3. Inciting Incident
 title: GuardDies
 ---
+<<set $objective = "Check the fallen guard.">>
 
 Guard: Good job, keep it u-.
 Guard: (coughs) My chest...
@@ -139,7 +147,7 @@ Guard: AAAAAAAAAAAAA
 <<set_enabled "guardDeadTrigger" true>>
 <<activate "guardDeadTrigger">>
 
-You: What is happeinng?
+You: What is happennig?
 You: Is he alive?
 
 Announcer: Do not stop production.
@@ -149,6 +157,7 @@ You: What is that on his body?
 
 title: KeyPickup
 ---
+<<set $objective = "Finish work, then use the key to escape.">>
 You: His key.
 You: If I ever wanted to leave... this is it.
 You: He is the only person taking care of this place. I gotta finish work so the door opens and I can leave!
@@ -166,6 +175,7 @@ title: StairDoorTry
     You: If they catch me...
     You: I'm dead.
     You: But if I stay here... was I ever alive?
+    <<set $objective = "">>
 <<else>>
     Door: ACCESS DENIED - AUTHORIZED PERSONNEL ONLY
     You: It's locked.
@@ -181,10 +191,12 @@ You: This must be a sign, I am leaving this place.
 
 <<set_enabled "factoryDoorTriggerOpen" true>>
 <<activate "factoryDoorTriggerOpen">>
+<<set $objective = "Use key to leave.">>
 ===
 
 title: TopArrival
 ---
+<<set $objective = "Keep moving through the upper level.">>
 You: So this is the view from up here?
 You: I have never seen it through this perspective.
 You: I better keep going.
@@ -193,11 +205,13 @@ You: I better keep going.
 // 5. Upper Maintenance Area / Vent
 title: VentsArrival
 ---
+<<set $objective = "Find a way into the ventilation system.">>
 You: The ventilation system... Maybe I can escape through it if I find a way to climb.
 ===
 
 title: VentFail
 ---
+<<set $objective = "Find the emergency stop button.">>
 You: There is so much smoke... I can't go in.
 You: I think there is an emergency stop button around... I will try that.
 ===
@@ -205,8 +219,10 @@ You: I think there is an emergency stop button around... I will try that.
 
 title: ButtonPressed
 ---
+<<set $objective = "Run back to the ventilation system.">>
 You: Here goes nothing!
-You: I've never felt so good.
+You: The smoke is stopping.
+You: I have never felt so good.
 <<wait 1>>
 You: Better run now.
 
@@ -216,14 +232,14 @@ Announcer: WHO DARES STOP PRODUCTION.
 title: OutsideFirstTime
 ---
 
-You: Silence.
+You: I am finally out.
 You: For the first time in my life...
-You: silence.
 <<wait 2>>
 You: Is this... the outside?
 You: It is not how I read in the books.
 You: I know this can't be all. I will keep going up!
 You: I gotta find a way.
+<<set $objective = "Climb higher. Find the real sky.">>
 ===
 
 // 7. Parkour Climb
@@ -251,6 +267,7 @@ You: Maybe freedom is only for the people at the top.
 
 title: LeapOfFaithBeans
 ---
+<<set $objective = "Find courage for the long jump.">>
 You: How can I possibly make this jump? It is too far...
 You: I knew it wouldn't work, what was I thinking?
 <<wait 2>>
@@ -265,23 +282,15 @@ You: Are these my favorite chilli beans? I can't believe it!!!
 
 title: LeapOfFaithBeansAte
 ---
+<<set $objective = "Make the jump.">>
 You: It never fails... Those beans fill me with hope!
 You: I feel like I can do this jump!
 ===
 
-// 8. Spiral Tower / Final Ascent
-title: PropagandaPoster1
----
-Poster: ASCENSION IS PRIVILEGE
-===
-
-title: PropagandaPoster2
----
-Poster: THE HIGHER LEVELS SUSTAIN HUMANITY
-===
 
 title: Tower
 ---
+<<set $objective = "Follow the tower upward.">>
 You: Where is this place?
 You: Are those beams sustaining something above?
 You: Where does it lead... above the clouds?
@@ -292,6 +301,7 @@ You: Where does it lead... above the clouds?
 title: SeeSky
 ---
 <<set $sawSky = true>>
+<<set $objective = "Take the stairs towards the top.">>
 <<wait 2>>
 ...
 You: It is more beautiful than I could ever imagine.
@@ -309,39 +319,15 @@ You: The sky...
 <<activate "StairsTrigger">>
 ===
 
-title: AboveCloudsWalk
----
-You: People live here.
-You: Plants live here.
-You: They told us nothing could survive outside.
-===
-
-// 10. Ending - Ambiguous Dream
-title: EndingWake
----
-Bruno: Wake up already.
-Bruno: If we're late again, they'll cut rations.
-
-Announcer: Workers of Sector 14. Meal period begins now.
-Announcer: Proceed in an orderly fashion.
-
-You: Same walls.
-You: Same smoke.
-You: Same day.
-
-<<if $hasProof == true>>
-    You: Wait.
-    You: A leaf.
-    You: ...No.
-    You: It was real.
-<<else>>
-    You: I know what is up there.
-<<endif>>
-===
 
 // Inventory / utility trigger
 title: KeyTrue
 ---
 <<set $hasKey = true>>
 Keycard added to inventory.
+===
+
+title: StairsUp
+---
+You: I will keep going up until I reach the top!
 ===

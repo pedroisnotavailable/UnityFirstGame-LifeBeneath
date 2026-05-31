@@ -9,6 +9,7 @@ public class InventoryView : MonoBehaviour
     public Transform inventoryItemContainer;
     public string openStateName = "InventoryShowAnimation";
     public string closeStateName = "InventoryHideAnimation";
+    public bool hideWhenEmpty = true;
 
     private List<GameObject> inventoryItemSlots = new List<GameObject>();
     private Animator animator;
@@ -31,6 +32,10 @@ public class InventoryView : MonoBehaviour
         }
 
         UpdateInventoryView();
+        if (hideWhenEmpty && inventory.IsEmpty())
+        {
+            Hide();
+        }
     }
 
     void AddEmptyInventoryItemSlot()
@@ -59,10 +64,23 @@ public class InventoryView : MonoBehaviour
                 inventoryItemSlots[i].name = "";
             }
         }
+
+        if (hideWhenEmpty && inventory.IsEmpty() && isVisible)
+        {
+            isVisible = false;
+            Hide();
+        }
     }
 
     public void OnInventoryButtonInteraction()
     {
+        if (hideWhenEmpty && inventory.IsEmpty())
+        {
+            isVisible = false;
+            Hide();
+            return;
+        }
+
         isVisible = !isVisible;
         if (isVisible)
         {

@@ -26,6 +26,18 @@ public class Inventory : MonoBehaviour
         return items[index];
     }
 
+    public bool IsEmpty()
+    {
+        foreach (var item in items)
+        {
+            if (item != null)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void AddInventoryItem(InventoryItemDefinition item)
     {
         RemoveInventoryItem(item.name);
