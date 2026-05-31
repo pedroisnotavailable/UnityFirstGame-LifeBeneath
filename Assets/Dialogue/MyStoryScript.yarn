@@ -7,6 +7,8 @@ title: Start
 <<declare $cellDoorOpen = false>>
 <<declare $DoorRoomTrigger = false>>
 
+<<declare $DoorBarsTriggerMain = false>>
+
 <<declare $factoryDoorTriggerOpen = false>>
 <<declare $factoryDoorTriggerClose = false>>
 
@@ -28,7 +30,6 @@ title: Start
 
 // 1. Wake-up / Dormitory
 
-<<set_enabled "DoorBarsTrigger" false>>
 <<set $objective = "">>
 
 Bruno: Oh, you're awake.
@@ -51,8 +52,8 @@ Announcer: Cell doors opening.
 
 <<set $cellDoorOpen = true>>
 <<set $objective = "Proceed to eating area.">>
-<<set_enabled "DoorBarsTrigger" true>>
-<<activate "DoorBarsTrigger">>
+<<set_enabled "DoorBarsTriggerMain" true>>
+<<activate "DoorBarsTriggerMain">>
 ===
 
 //Work
@@ -112,7 +113,7 @@ title: LockedDoor
     Door: ACCESS DENIED - AUTHORIZED PERSONNEL ONLY
     You: This is where they come from.
     You: Guards, supervisors, The people above us.
-    You: If only...
+    You: If only I could go through...
     <<wait 3>>
     <<set $objective = "Go into the factory.">>
     Announcer: You may now proceed to your designated working position.
@@ -184,7 +185,7 @@ title: StairDoorTry
 
 title: WorkDone
 ---
-Announcer: You may now return to your cells
+Announcer: You may now return to your cell.
 Announcer: You have failed to meet the quota, your food will be cut.
 
 You: This must be a sign, I am leaving this place. 

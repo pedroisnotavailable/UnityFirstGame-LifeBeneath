@@ -94,6 +94,11 @@ public class InventoryView : MonoBehaviour
 
     void Show()
     {
+        if (inventoryItemContainer)
+        {
+            inventoryItemContainer.gameObject.SetActive(true);
+        }
+
         if (animator)
         {
             animator.Play(openStateName);
@@ -105,6 +110,10 @@ public class InventoryView : MonoBehaviour
         if (animator)
         {
             animator.Play(closeStateName);
+        }
+        else if (inventoryItemContainer)
+        {
+            inventoryItemContainer.gameObject.SetActive(false);
         }
     }
 }
