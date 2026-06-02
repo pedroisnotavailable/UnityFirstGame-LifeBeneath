@@ -139,7 +139,7 @@ You: I wish something would happen.
 // 3. Inciting Incident
 title: GuardDies
 ---
-<<set $objective = "Check the fallen guard.">>
+<<set $objective = "Check the guard.">>
 
 Guard: Good job, keep it u-.
 Guard: (coughs) My chest...

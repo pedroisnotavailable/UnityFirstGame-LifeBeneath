@@ -7,6 +7,11 @@ TagManager:
   - CinemachineTarget
   - SpawnPoint
   - RespawnPlayers
+  - Pole
+  - Reach
+  - Vault
+  - Slide
+  - Deep Jump
   layers:
   - Default
   - TransparentFX
@@ -15,7 +20,7 @@ TagManager:
   - Water
   - UI
   - ProximityTriggers
-  - 
+  - GuardCollider
   - 
   - 
   - 

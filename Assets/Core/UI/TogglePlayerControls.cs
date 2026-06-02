@@ -9,7 +9,6 @@ public class TogglePlayerControls : MonoBehaviour
     public void SetInputState(bool enabled)
     {
         GetComponent<CharacterController>().enabled = enabled;
-        GetComponent<ThirdPersonControllerFixed>().enabled = enabled;
         GetComponent<Animator>().enabled = enabled;
     }
     
