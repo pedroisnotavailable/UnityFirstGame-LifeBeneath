@@ -374,7 +374,7 @@ MonoBehaviour:
   canRepeat: 0
   shouldActivateOnCollision: 0
   canBeActivated: 1
-  sceneToLoad: Myscene
+  sceneToLoad: MyScene
   ObjectsToKeep: []
   fadeAnimator: {fileID: 0}
   fadeDuration: 1.25
